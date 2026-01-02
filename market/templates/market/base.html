@@ -1,0 +1,37 @@
+{% load static %}<!DOCTYPE html>
+<html lang="pl">
+<head>
+    <meta charset="UTF-8">
+    <title>BoardGame Market</title>
+    <link rel="stylesheet" href="{% static 'css/style.css' %}">
+    <style>
+        body { font-family: sans-serif; padding: 20px; }
+        nav { background: #333; padding: 10px; margin-bottom: 20px; }
+        nav a { color: white; text-decoration: none; margin-right: 15px; }
+        .card { border: 1px solid #ddd; padding: 10px; margin-bottom: 10px; width: 300px; }
+        .price { color: green; font-weight: bold; }
+    </style>
+</head>
+<body>
+
+    <nav>
+        <a href="/">Strona Główna</a>
+        {% if user.is_authenticated %}
+            <span style="color: #bdc3c7;">Witaj, {{ user.username }}!</span>
+        {% else %}
+            <a href="/admin/">Logowanie (Admin)</a>
+        {% endif %}
+    </nav>
+
+    <div class="container">
+        {% block content %}
+        {% endblock %}
+    </div>
+
+    <hr>
+    <footer>
+        <p>&copy; 2026 BoardGame Market</p>
+    </footer>
+
+</body>
+</html>

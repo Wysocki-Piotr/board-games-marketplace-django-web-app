@@ -1,0 +1,12 @@
+<div class="seller-card">
+    <h4 class="seller-header">Sprzedawca</h4>
+    <div class="seller-row">
+        <div class="seller-avatar">
+            {{ seller.username|first|upper }}
+        </div>
+        <div>
+            <div class="seller-name">{{ seller.username }}</div>
+            <div class="seller-date">Dołączył: {{ seller.date_joined|date:"Y" }}</div>
+        </div>
+    </div>
+</div>

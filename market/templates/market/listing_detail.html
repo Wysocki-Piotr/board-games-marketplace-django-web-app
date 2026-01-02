@@ -1,0 +1,37 @@
+{% extends 'market/base.html' %}
+{% load market_extras %}
+
+{% block content %}
+    <a href="{% url 'market:listing_list' %}" class="detail-back-link">&larr; Wróć do listy</a>
+
+    <div class="detail-container">
+
+        <div class="detail-image-box">
+            {% if listing.image %}
+                <img src="{{ listing.image.url }}" alt="{{ listing.game.title }}">
+            {% else %}
+                <div class="detail-placeholder">Brak zdjęcia</div>
+            {% endif %}
+        </div>
+
+        <div class="detail-info-box">
+            <h1 class="detail-title">{{ listing.game.title }}</h1>
+            <p style="color: #7f8c8d;">Kategoria: {{ listing.game.category.name }}</p>
+
+            <div class="detail-price">{{ listing.price }} PLN</div>
+
+            <p><strong>Stan:</strong> {{ listing.get_condition_display }}</p>
+            <p><strong>Data dodania:</strong> {{ listing.created_at|date:"d.m.Y" }}</p>
+
+            <hr >
+
+            <h3>Opis gry</h3>
+            <div class="detail-desc">
+                {{ listing.game.description|linebreaks }}
+            </div>
+
+            {% show_seller_card listing.user %}
+
+        </div>
+    </div>
+{% endblock %}

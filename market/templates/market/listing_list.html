@@ -1,0 +1,30 @@
+{% extends 'market/base.html' %}
+
+{% block content %}
+    <h1>Dostępne gry planszowe</h1>
+
+    {% if listings %}
+        <div class="listing-container">
+            {% for listing in listings %}
+                <div class="card">
+                <a href="{% url 'market:listing_detail' listing.id %}" class="card-link-wrapper">
+                    {% if listing.image %}
+                        <img src="{{ listing.image.url }}" alt="{{ listing.game.title }}" style="width: 100%; height: 200px; object-fit: cover;">
+                    {% else %}
+                        <div class="no_photo">Brak zdjęcia</div>
+                    {% endif %}
+
+                    <h3>{{ listing.game.title }}</h3>
+                    <p>{{ listing.game.category.name }}</p>
+                    <p class="price">{{ listing.price }} PLN</p>
+                    <p>Stan: <strong>{{ listing.get_condition_display }}</strong></p>
+                    <small>Sprzedawca: {{ listing.user.username }}</small>
+                </a>
+                </div>
+            {% endfor %}
+        </div>
+    {% else %}
+        <p>Brak ofert sprzedaży w tej chwili.</p>
+    {% endif %}
+
+{% endblock %}
