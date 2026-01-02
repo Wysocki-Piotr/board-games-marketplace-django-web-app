@@ -1,0 +1,18 @@
+{% extends 'market/base.html' %}
+
+{% block content %}
+<div class="auth-container">
+    <h2 class="auth-header">Zaloguj się</h2>
+
+    <form method="post">
+        {% csrf_token %}
+        {{ form.as_p }}
+        <button type="submit" class="btn btn-primary">Zaloguj</button>
+    </form>
+
+    <div class="auth-links">
+        <a href="{% url 'password_reset' %}">Zapomniałeś hasła?</a> |
+        <a href="{% url 'market:register' %}">Załóż konto</a>
+    </div>
+</div>
+{% endblock %}

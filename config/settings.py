@@ -94,8 +94,9 @@ USE_I18N = True
 
 USE_TZ = True
 
+LOGIN_REDIRECT_URL = 'market:listing_list'
 
-# Static files (CSS, JavaScript, Images)
-# https://docs.djangoproject.com/en/6.0/howto/static-files/
+LOGOUT_REDIRECT_URL = 'market:listing_list'
+
 
 STATIC_URL = 'static/'

@@ -16,14 +16,38 @@
 
         <div class="detail-info-box">
             <h1 class="detail-title">{{ listing.game.title }}</h1>
-            <p style="color: #7f8c8d;">Kategoria: {{ listing.game.category.name }}</p>
+            <p class="detail-category">Kategoria: {{ listing.game.category.name }}</p>
 
             <div class="detail-price">{{ listing.price }} PLN</div>
 
+            {% if not listing.is_sold %}
+                {% if user.is_authenticated %}
+                    {% if user != listing.user %}
+                        <form action="{% url 'market:buy_listing' listing.pk %}" method="post" class="mb-20">
+                            {% csrf_token %}
+                            <button type="submit" class="btn btn-success btn-block btn-lg">
+                                Kup Teraz
+                            </button>
+                        </form>
+                    {% else %}
+                        <div class="status-badge status-owner">
+                            To Twoja oferta
+                        </div>
+                    {% endif %}
+                {% else %}
+                    <a href="{% url 'login' %}?next={{ request.path }}" class="btn btn-primary btn-block mb-20">
+                        Zaloguj się, aby kupić
+                    </a>
+                {% endif %}
+            {% else %}
+                <div class="status-badge status-sold">
+                    Produkt sprzedany
+                </div>
+            {% endif %}
             <p><strong>Stan:</strong> {{ listing.get_condition_display }}</p>
             <p><strong>Data dodania:</strong> {{ listing.created_at|date:"d.m.Y" }}</p>
 
-            <hr >
+            <hr>
 
             <h3>Opis gry</h3>
             <div class="detail-desc">
