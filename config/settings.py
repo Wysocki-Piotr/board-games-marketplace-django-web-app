@@ -10,6 +10,8 @@ SECRET_KEY = os.getenv('SECRET_KEY')
 
 DEBUG = True
 
+EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
+
 ALLOWED_HOSTS = []
 
 
