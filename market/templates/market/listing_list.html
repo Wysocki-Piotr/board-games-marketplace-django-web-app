@@ -1,30 +1,56 @@
 {% extends 'market/base.html' %}
 
-{% block content %}
+{% load static %}{% block content %}
+    <div class="filters-box">
+    <h3>🔍 Znajdź grę</h3>
+
+    <div class="filters-row">
+
+        <input type="text" id="api-search-query" placeholder="Nazwa gry..." class="form-control filter-input-large">
+
+        <input type="number" id="api-max-price" placeholder="Max cena" class="form-control filter-input-small">
+
+        <select id="api-condition" class="form-control filter-input-small">
+            <option value="all">Wszystkie stany</option>
+            <option value="new">Nowa (w folii)</option>
+            <option value="used_good">Używana (bdb)</option>
+            <option value="used_poor">Używana (ślady)</option>
+        </select>
+
+        <button id="btn-api-search" class="btn-search">Szukaj</button>
+    </div>
+</div>
     <h1>Dostępne gry planszowe</h1>
 
-    {% if listings %}
-        <div class="listing-container">
+        <div class="listing-container" id="listings-grid">
+            {% if listings %}
             {% for listing in listings %}
                 <div class="card">
-                <a href="{% url 'market:listing_detail' listing.id %}" class="card-link-wrapper">
-                    {% if listing.image %}
-                        <img src="{{ listing.image.url }}" alt="{{ listing.game.title }}">
-                    {% else %}
-                        <div class="no_photo">Brak zdjęcia</div>
-                    {% endif %}
+                    <a href="{% url 'market:listing_detail' listing.id %}" class="card-link-wrapper">
+                        {% if listing.image %}
+                            <img src="{{ listing.image.url }}" alt="{{ listing.game.title }}">
+                        {% else %}
+                            <div class="no_photo">Brak zdjęcia</div>
+                        {% endif %}
 
-                    <h3>{{ listing.game.title }}</h3>
-                    <p>{{ listing.game.category.name }}</p>
-                    <p class="price">{{ listing.price }} PLN</p>
-                    <p>Stan: <strong>{{ listing.get_condition_display }}</strong></p>
-                    <small>Sprzedawca: {{ listing.user.username }}</small>
-                </a>
+                        <h3>{{ listing.game.title }}</h3>
+
+                        <p>
+                            {% if listing.game %}
+                                {{ listing.game.category.name }}
+                            {% else %}
+                                Inne / Nieskategoryzowane
+                            {% endif %}
+                        </p>
+                        <p class="price">{{ listing.price }} PLN</p>
+                        <p>Stan: <strong>{{ listing.get_condition_display }}</strong></p>
+                        <small>Sprzedawca: {{ listing.user.username }}</small>
+                    </a>
                 </div>
             {% endfor %}
+        {% else %}
+            <p style="width: 100%;">Brak ofert sprzedaży w tej chwili.</p>
+        {% endif %}
         </div>
-    {% else %}
-        <p>Brak ofert sprzedaży w tej chwili.</p>
-    {% endif %}
-
+<script src="{% static 'js/main.js' %}"></script>
 {% endblock %}

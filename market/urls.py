@@ -24,4 +24,6 @@ urlpatterns = [
              template_name='market/password_reset_done.html'
          ),
          name='password_reset_done'),
+    path('listing/<int:pk>/edit/', views.edit_listing, name='edit_listing'),
+    path('api/search/', views.search_listings, name='search_api'),
 ]

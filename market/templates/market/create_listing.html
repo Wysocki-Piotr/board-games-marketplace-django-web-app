@@ -1,14 +1,21 @@
 {% extends 'market/base.html' %}
 
-{% block content %}
-<div class="auth-container" style="max-width: 600px;"> <h2 class="auth-header">Sprzedaj grę</h2>
+{% load static %}{% block content %}
+<div class="auth-container" style="max-width: 600px;">
+    <h2 class="auth-header">
+        {% if title %}{{ title }}{% else %}Sprzedaj grę{% endif %}
+    </h2>
 
     <form method="post" enctype="multipart/form-data">
         {% csrf_token %}
         {{ form.as_p }}
-        <button type="submit" class="btn btn-success btn-block">Wystaw ofertę</button>
+
+        <button type="submit" class="btn btn-success btn-block">
+            {% if title %}Zapisz zmiany{% else %}Wystaw ofertę{% endif %}
+        </button>
     </form>
 
     <a href="{% url 'market:listing_list' %}" class="btn-link-cancel">Anuluj i wróć</a>
 </div>
+    <script src="{% static 'js/main.js' %}"></script>
 {% endblock %}

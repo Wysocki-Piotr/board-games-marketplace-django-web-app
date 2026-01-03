@@ -1,7 +1,7 @@
 {% extends 'market/base.html' %}
 {% load market_extras %}
 
-{% block content %}
+{% load static %}{% block content %}
     <a href="{% url 'market:listing_list' %}" class="detail-back-link">&larr; Wróć do listy</a>
 
     <div class="detail-container">
@@ -15,8 +15,29 @@
         </div>
 
         <div class="detail-info-box">
-            <h1 class="detail-title">{{ listing.game.title }}</h1>
-            <p class="detail-category">Kategoria: {{ listing.game.category.name }}</p>
+        <h1 class="detail-title">
+            {% if listing.game %}
+                {{ listing.game.title }}
+            {% else %}
+                {{ listing.custom_title }} <small>(Brak tytułu)</small>
+            {% endif %}
+        </h1>
+
+        <p class="detail-category">
+            Kategoria:
+            {% if listing.game %}
+                {{ listing.game.category.name }}
+            {% else %}
+                Brak (oferta niestandardowa)
+            {% endif %}
+        </p>
+
+        {% if listing.game %}
+            <h3>Opis gry</h3>
+            <div class="detail-desc">
+                {{ listing.game.description|linebreaks }}
+            </div>
+        {% endif %}
 
             <div class="detail-price">{{ listing.price }} PLN</div>
 
@@ -32,6 +53,13 @@
                     {% else %}
                         <div class="status-badge status-owner">
                             To Twoja oferta
+                        </div>
+                         <div class="actions-section">
+                        {% if user == listing.user and not listing.is_sold %}
+                            <a href="{% url 'market:edit_listing' listing.pk %}" class="btn btn-primary" style="margin-bottom: 15px; display:inline-block;">
+                                ✏️ Edytuj ogłoszenie
+                            </a>
+                        {% endif %}
                         </div>
                     {% endif %}
                 {% else %}
@@ -55,7 +83,11 @@
             </div>
 
             {% show_seller_card listing.user %}
+        <button id="share-btn" class="btn-share">
+            Udostępnij ofertę
+        </button>
 
         </div>
     </div>
+    <script src="{% static 'js/main.js' %}"></script>
 {% endblock %}
