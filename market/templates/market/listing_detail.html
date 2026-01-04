@@ -1,7 +1,15 @@
 {% extends 'market/base.html' %}
 {% load market_extras %}
 
-{% load static %}{% block content %}
+{% load static %}
+{% block extra_css %}
+    <link rel="stylesheet" href="{% static 'css/details.css' %}">
+{% endblock %}
+{% block extra_js %}
+    <script src="{% static 'js/offers.js' %}"></script>
+    <script src="{% static 'js/share.js' %}"></script>
+{% endblock %}
+{% block content %}
     <a href="{% url 'market:listing_list' %}" class="detail-back-link">&larr; Wróć do listy</a>
 
     <div class="detail-container">
@@ -46,7 +54,7 @@
                     {% if user != listing.user %}
                         <form action="{% url 'market:buy_listing' listing.pk %}" method="post" class="mb-20">
                             {% csrf_token %}
-                            <button type="submit" class="btn btn-success btn-block btn-lg">
+                            <button type="submit" class="btn btn-success btn-block btn-lg" onclick="this.form.submit(); this.disabled=true;">
                                 Kup Teraz
                             </button>
                         </form>
@@ -182,5 +190,4 @@
     </div>
     </div>
 
-    <script src="{% static 'js/main.js' %}"></script>
 {% endblock %}

@@ -1,0 +1,40 @@
+form p {
+    margin-bottom: 15px;
+}
+
+form input[type="text"],
+form input[type="password"],
+form input[type="email"],
+form input[type="number"],
+form select,
+form textarea {
+    width: 100%;
+    padding: 10px;
+    margin-top: 5px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    box-sizing: border-box;
+}
+
+.form-group { margin-bottom: 15px; }
+.form-control { width: 100%; padding: 10px; box-sizing: border-box; margin-top: 5px; }
+
+.input-error {
+    border-color: #e74c3c !important;
+    background-color: #fce4e4;
+}
+
+.errorlist {
+    color: #e74c3c;
+    list-style: none;
+    padding: 0;
+    margin: 5px 0;
+    font-size: 0.9em;
+    font-weight: bold;
+}
+
+.js-error-message{
+    color: #e74c3c;
+    font-size: 0.85em;
+    margin-top: 5px;
+}

@@ -74,7 +74,6 @@ def kup_gre(request, pk):
 
         messages.success(request, f"Gratulacje! Kupiłeś grę: {game_title}")
 
-        messages.success(request, f"Gratulacje! Kupiłeś grę: {listing.game.title}")
         return redirect('market:listing_list')
 
     return redirect('market:listing_detail', pk=pk)

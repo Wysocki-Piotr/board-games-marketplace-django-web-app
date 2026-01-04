@@ -1,6 +1,10 @@
 {% extends 'market/base.html' %}
 
-{% load static %}{% block content %}
+{% load static %}
+{% block extra_js %}
+    <script src="{% static 'js/search.js' %}"></script>
+{% endblock %}
+{% block content %}
     <div class="filters-box">
     <h3>🔍 Znajdź grę</h3>
 
@@ -52,5 +56,4 @@
             <p style="width: 100%;">Brak ofert sprzedaży w tej chwili.</p>
         {% endif %}
         </div>
-<script src="{% static 'js/main.js' %}"></script>
 {% endblock %}

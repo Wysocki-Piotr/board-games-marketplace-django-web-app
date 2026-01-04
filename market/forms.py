@@ -26,15 +26,15 @@ class ListingForm(forms.ModelForm):
             }),
         }
 
-        def clean(self):
-            cleaned_data = super().clean()
-            game = cleaned_data.get("game")
-            custom_title = cleaned_data.get("custom_title")
+    def clean(self):
+        cleaned_data = super().clean()
+        game = cleaned_data.get("game")
+        custom_title = cleaned_data.get("custom_title")
 
-            if not game and not custom_title:
-                raise forms.ValidationError("Musisz wybrać grę z listy LUB wpisać własny tytuł.")
+        if not game and not custom_title:
+            raise forms.ValidationError("Musisz wybrać grę z listy LUB wpisać własny tytuł.")
 
-            if game and custom_title:
-                raise forms.ValidationError("Wybierz tylko jedną opcję: albo lista, albo własny tytuł.")
+        if game and custom_title:
+            raise forms.ValidationError("Wybierz tylko jedną opcję: albo lista, albo własny tytuł.")
 
-            return cleaned_data
+        return cleaned_data

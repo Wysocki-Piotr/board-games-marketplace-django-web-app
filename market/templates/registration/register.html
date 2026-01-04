@@ -1,10 +1,13 @@
 {% extends 'market/base.html' %}
 
+{% block extra_js %}
+    <script src="{% static 'js/validation.js' %}"></script>
+{% endblock %}
 {% block content %}
 <div class="auth-container">
     <h2 class="auth-header">Rejestracja</h2>
 
-    <form method="post">
+    <form method="post" id="register-form" novalidate>
         {% csrf_token %}
         {{ form.as_p }}
         <button type="submit" class="btn btn-primary">Zarejestruj się</button>
