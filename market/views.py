@@ -1,14 +1,19 @@
 from django.shortcuts import render, get_object_or_404, redirect
-from .models import Listing
+from .models import Listing, Offer
 from django.contrib.auth.decorators import login_required
 from .forms import RejestracjaForm, ListingForm
 from django.contrib import messages
 from django.http import JsonResponse
+from .serializers import ListingSerializer, OfferSerializer
+from .filters import ListingFilter
+from rest_framework import generics, permissions
+from rest_framework.response import Response
+from rest_framework import status as http_status
+from django.db.models import Q
 
 # Create your views here.
 def listing_list(request):
-    # Pobieramy wszystkie oferty, które nie są sprzedane
-    listings = Listing.objects.filter(is_sold=False)
+    listings = Listing.objects.filter(is_sold=False).order_by('-created_at')
 
     context = {
         'listings': listings
@@ -92,48 +97,71 @@ def edit_listing(request, pk):
     else:
         form = ListingForm(instance=listing)
 
-    # Używamy tego samego szablonu co przy tworzeniu, ale przekazujemy flagę 'is_edit'
     return render(request, 'market/create_listing.html', {
         'form': form,
         'title': 'Edytuj ogłoszenie'
     })
 
 
-def search_listings(request):
-    query = request.GET.get('query', '')
-    max_price = request.GET.get('max_price')
-    condition = request.GET.get('condition')
+class ListingSearchAPIView(generics.ListAPIView):
+    serializer_class = ListingSerializer
 
-    listings = Listing.objects.filter(is_sold=False)
+    def get_queryset(self):
 
-    if query:
-        from django.db.models import Q
-        listings = listings.filter(
-            Q(game__title__icontains=query) |
-            Q(custom_title__icontains=query)
-        )
+        queryset = Listing.objects.filter(is_sold=False).select_related('game', 'game__category', 'user')
 
-    if max_price:
-        listings = listings.filter(price__lte=max_price)
+        query = self.request.query_params.get('query')
+        max_price = self.request.query_params.get('max_price')
+        condition = self.request.query_params.get('condition')
 
-    if condition and condition != 'all':
-        listings = listings.filter(condition=condition)
+        if query:
+            queryset = queryset.filter(
+                Q(game__title__icontains=query) |
+                Q(custom_title__icontains=query)
+            )
 
-    data = []
-    for item in listings:
-        title = item.game.title if item.game else item.custom_title
-        category = item.game.category.name if item.game else "Inne"
+        if max_price:
+            queryset = queryset.filter(price__lte=max_price)
 
-        image_url = item.image.url if item.image else ""
+        if condition and condition != 'all':
+            queryset = queryset.filter(condition=condition)
 
-        data.append({
-            'id': item.id,
-            'title': title,
-            'category': category,
-            'price': str(item.price),
-            'condition_display': item.get_condition_display(),
-            'image_url': image_url,
-            'seller': item.user.username
-        })
+        return queryset.order_by('-created_at')
 
-    return JsonResponse({'listings': data})
+class CreateOfferAPIView(generics.CreateAPIView):
+
+    queryset = Offer.objects.all()
+    serializer_class = OfferSerializer
+    permission_classes = [permissions.IsAuthenticated]
+
+    def perform_create(self, serializer):
+        serializer.save(buyer=self.request.user)
+
+
+class ManageOfferAPIView(generics.RetrieveUpdateAPIView):
+    queryset = Offer.objects.all()
+    serializer_class = OfferSerializer
+    permission_classes = [permissions.IsAuthenticated]
+
+    def update(self, request, *args, **kwargs):
+        offer = self.get_object()
+
+        if offer.listing.user != request.user:
+            return Response(
+                {"error": "Nie jesteś właścicielem tego ogłoszenia!"},
+                status=http_status.HTTP_403_FORBIDDEN
+            )
+
+        new_status = request.data.get("status")
+
+        if new_status not in ['accepted', 'rejected']:
+            return Response({"error": "Nieprawidłowy status."}, status=http_status.HTTP_400_BAD_REQUEST)
+
+        if new_status == 'accepted':
+            offer.listing.price = offer.price
+            offer.listing.save()
+
+        offer.status = new_status
+        offer.save()
+
+        return Response({"message": f"Oferta została {new_status}", "new_price": offer.listing.price})

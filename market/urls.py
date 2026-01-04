@@ -25,5 +25,7 @@ urlpatterns = [
          ),
          name='password_reset_done'),
     path('listing/<int:pk>/edit/', views.edit_listing, name='edit_listing'),
-    path('api/search/', views.search_listings, name='search_api'),
+    path('api/search/', views.ListingSearchAPIView.as_view(), name='listing_search_api'),
+    path('api/offers/', views.CreateOfferAPIView.as_view(), name='create_offer_api'),
+    path('api/offers/<int:pk>/manage/', views.ManageOfferAPIView.as_view(), name='manage_offer_api'),
 ]

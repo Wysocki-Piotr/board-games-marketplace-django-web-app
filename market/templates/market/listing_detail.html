@@ -50,6 +50,9 @@
                                 Kup Teraz
                             </button>
                         </form>
+                        <button id="btn-open-negotiation" class="btn btn-warning btn-lg" >
+                            💰 Negocjuj cenę
+                        </button>
                     {% else %}
                         <div class="status-badge status-owner">
                             To Twoja oferta
@@ -61,12 +64,79 @@
                             </a>
                         {% endif %}
                         </div>
+                        <div class="offers-section">
+    <h3>📥 Otrzymane oferty negocjacji</h3>
+
+    {% if listing.offers.all %}
+        <div class="offers-list">
+            {% for offer in listing.offers.all %}
+                <div class="offer-card {{ offer.status }}">
+                    <div class="offer-header">
+                        <div class="offer-info">
+                            <strong>{{ offer.buyer.username }}</strong> proponuje:
+                            <span class="offer-price">{{ offer.price }} PLN</span>
+                            <div class="offer-message">
+                                <small>Wiadomość: <i>{{ offer.message|default:"Brak wiadomości" }}</i></small>
+                            </div>
+                            <div class="offer-meta">
+                                Status:
+                                {% if offer.status == 'pending' %}
+                                    <span style="color: orange; font-weight: bold;">Oczekuje</span>
+                                {% elif offer.status == 'accepted' %}
+                                    <span style="color: green; font-weight: bold;">Zaakceptowana</span>
+                                {% else %}
+                                    <span style="color: red; font-weight: bold;">Odrzucona</span>
+                                {% endif %}
+                                | Data: {{ offer.created_at|date:"d.m.Y H:i" }}
+                            </div>
+                        </div>
+
+                        {% if offer.status == 'pending' %}
+                        <div class="offer-actions">
+                            <button class="btn-mini btn-accept" data-id="{{ offer.id }}">
+                                ✅ Akceptuj
+                            </button>
+                            <button class="btn-mini btn-reject" data-id="{{ offer.id }}">
+                                ❌ Odrzuć
+                            </button>
+                        </div>
+                        {% endif %}
+                    </div>
+                </div>
+            {% endfor %}
+        </div>
+    {% else %}
+        <p class="no-offers">Brak ofert negocjacji dla tego przedmiotu.</p>
+    {% endif %}
+</div>
                     {% endif %}
                 {% else %}
                     <a href="{% url 'login' %}?next={{ request.path }}" class="btn btn-primary btn-block mb-20">
                         Zaloguj się, aby kupić
                     </a>
                 {% endif %}
+                <div id="negotiationModal" class="modal-overlay" style="display: none;">
+    <div class="modal-content">
+        <span class="close-modal">&times;</span>
+        <h3>Zaproponuj swoją cenę</h3>
+        <p>Aktualna cena: <strong>{{ listing.price }} PLN</strong></p>
+
+        <input type="hidden" id="offer-listing-id" value="{{ listing.pk }}">
+
+        <div class="form-group">
+            <label>Twoja propozycja (PLN):</label>
+            <input type="number" id="offer-price" class="form-control" step="0.01" placeholder="Np. {{ listing.price|add:'-10' }}">
+        </div>
+
+        <div class="form-group">
+            <label>Wiadomość do sprzedawcy:</label>
+            <textarea id="offer-message" class="form-control" rows="3" placeholder="Np. Kupię od ręki, jeśli zejdziesz z ceny..."></textarea>
+        </div>
+
+        <button id="btn-send-offer" class="btn btn-primary btn-block">Wyślij ofertę</button>
+        <div id="offer-status" style="margin-top: 10px; font-weight: bold;"></div>
+    </div>
+</div>
             {% else %}
                 <div class="status-badge status-sold">
                     Produkt sprzedany
@@ -88,6 +158,29 @@
         </button>
 
         </div>
+    <div id="negotiationModal" class="modal-overlay" style="display: none;">
+        <div class="modal-content">
+            <span class="close-modal">&times;</span>
+            <h3>Zaproponuj swoją cenę</h3>
+            <p>Aktualna cena: <strong>{{ listing.price }} PLN</strong></p>
+
+            <input type="hidden" id="offer-listing-id" value="{{ listing.pk }}">
+
+            <div class="form-group">
+                <label for="offer-price">Twoja propozycja (PLN):</label>
+                <input type="number" id="offer-price" class="form-control" step="0.01">
+            </div>
+
+            <div class="form-group">
+                <label for="offer-message">Wiadomość do sprzedawcy:</label>
+                <textarea id="offer-message" class="form-control" rows="3"></textarea>
+            </div>
+
+            <button id="btn-send-offer" class="btn btn-primary btn-block">Wyślij ofertę</button>
+            <div id="offer-status" class="status-message"></div>
+        </div>
     </div>
+    </div>
+
     <script src="{% static 'js/main.js' %}"></script>
 {% endblock %}

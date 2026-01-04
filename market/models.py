@@ -26,7 +26,6 @@ class BoardGame(models.Model):
     def __str__(self):
         return self.title
 
-# 3. Model Oferty (Konkretny egzemplarz sprzedawany przez usera)
 class Listing(models.Model):
     CONDITION_CHOICES = [
         ('new', 'Nowa (w folii)'),
@@ -54,3 +53,18 @@ class Listing(models.Model):
 
     def get_title(self):
         return self.game.title if self.game else self.custom_title
+
+class Offer(models.Model):
+    listing = models.ForeignKey(Listing, on_delete=models.CASCADE, related_name='offers', verbose_name="Ogłoszenie")
+    buyer = models.ForeignKey(User, on_delete=models.CASCADE, verbose_name="Kupujący")
+    price = models.DecimalField(max_digits=10, decimal_places=2, verbose_name="Zaproponowana cena")
+    message = models.TextField(blank=True, verbose_name="Wiadomość")
+    created_at = models.DateTimeField(auto_now_add=True)
+    status = models.CharField(
+        max_length=20,
+        choices=[('pending', 'Oczekuje'), ('accepted', 'Zaakceptowana'), ('rejected', 'Odrzucona')],
+        default='pending'
+    )
+
+    def __str__(self):
+        return f"Oferta {self.price} zł za {self.listing}"
