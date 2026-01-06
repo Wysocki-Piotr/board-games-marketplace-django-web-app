@@ -1,19 +1,52 @@
 nav {
     background: #2c3e50;
-    padding: 15px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    height: 70px;
+    position: relative;
+    z-index: 100;
+    padding: 0 15px;
     margin-bottom: 30px;
     border-radius: 5px;
+}
+
+.nav-links {
+    display: flex;
+    align-items: center;
+    gap: 15px;
 }
 
 nav a {
     color: #ecf0f1;
     text-decoration: none;
-    margin-right: 20px;
     font-weight: bold;
 }
 
 nav a:hover {
     color: #3498db;
+}
+
+.brand-logo {
+    display: flex;
+    align-items: center;
+    height: 100%;
+    transition: opacity 0.3s;
+}
+
+.brand-logo:hover {
+    opacity: 0.8;
+    color: #ffb703;
+}
+
+.brand-logo img {
+    height: 100px;
+    margin-top: -10px;
+    margin-bottom: -10px;
+    width: auto;
+    object-fit: contain;
+    position: relative;
+    z-index: 101;
 }
 
 .auth-container {

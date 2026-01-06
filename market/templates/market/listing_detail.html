@@ -18,7 +18,7 @@
             {% if listing.image %}
                 <img src="{{ listing.image.url }}" alt="{{ listing.game.title }}">
             {% else %}
-                <div class="detail-placeholder">Brak zdjęcia</div>
+                <img src="{% static 'img/placeholder.png' %}" alt="Brak zdjęcia" class="card-img-top placeholder-img">
             {% endif %}
         </div>
 

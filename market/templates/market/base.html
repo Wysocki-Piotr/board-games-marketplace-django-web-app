@@ -25,18 +25,21 @@
 <body>
 
     <nav>
-        <a href="/">Strona Główna</a>
-        {% if user.is_authenticated %}
-            <a href="{% url 'market:create_listing' %}" class="nav-add-btn">+ Dodaj Grę</a>
-
-                    <form action="{% url 'logout' %}" method="post" style="display: inline;">
-                        {% csrf_token %}
-                        <button type="submit" class="btn btn-logout">Wyloguj</button>
-                    </form>
-                {% else %}
-                    <a href="{% url 'login' %}">Logowanie</a>
-                    <a href="{% url 'market:register' %}">Rejestracja</a>
-                {% endif %}
+    <a href="/" class="brand-logo">
+        <img src="{% static 'img/logo.png' %}" alt="Logo">
+    </a>
+     <div class="nav-links">
+            {% if user.is_authenticated %}
+                <a href="{% url 'market:create_listing' %}" class="nav-add-btn">+ Dodaj Grę</a>
+                <form action="{% url 'logout' %}" method="post" style="display: inline;">
+                    {% csrf_token %}
+                    <button type="submit" class="btn btn-logout">Wyloguj</button>
+                </form>
+            {% else %}
+                <a href="{% url 'login' %}">Logowanie</a>
+                <a href="{% url 'market:register' %}">Rejestracja</a>
+            {% endif %}
+        </div>
     </nav>
 
     <div class="container">
@@ -54,7 +57,7 @@
 
     <hr>
     <footer>
-        <p>&copy; 2026 BoardGame Market</p>
+        <p>&copy; 2026 Gildia Gier</p>
     </footer>
 
 </body>
