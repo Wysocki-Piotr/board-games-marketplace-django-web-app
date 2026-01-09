@@ -1,20 +1,35 @@
 nav {
-    background: #2c3e50;
+    background: var(--primary);
+    border-bottom: 0.25rem solid var(--accent);
     display: flex;
     justify-content: space-between;
     align-items: center;
-    height: 70px;
+    min-height: 4.375rem;
     position: relative;
     z-index: 100;
-    padding: 0 15px;
-    margin-bottom: 30px;
-    border-radius: 5px;
+    padding: 0 0.9375rem;
+    margin-bottom: 1.875rem;
+    border-radius: 0 0 0.5rem 0.5rem;
 }
 
 .nav-links {
     display: flex;
     align-items: center;
-    gap: 15px;
+    gap: 0.9375rem;
+}
+
+@media (max-width: 48rem) {
+    nav {
+        flex-direction: column;
+        height: auto;
+        padding: 1rem;
+    }
+
+    .nav-links {
+        margin-top: 1rem;
+        width: 100%;
+        justify-content: center;
+    }
 }
 
 nav a {
@@ -24,7 +39,7 @@ nav a {
 }
 
 nav a:hover {
-    color: #3498db;
+    color: var(--accent);
 }
 
 .brand-logo {
@@ -40,9 +55,9 @@ nav a:hover {
 }
 
 .brand-logo img {
-    height: 100px;
-    margin-top: -10px;
-    margin-bottom: -10px;
+    height: 6.25rem;
+    margin-top: -0.625rem;
+    margin-bottom: -0.625rem;
     width: auto;
     object-fit: contain;
     position: relative;
@@ -50,11 +65,11 @@ nav a:hover {
 }
 
 .auth-container {
-    max-width: 400px;
-    margin: 50px auto;
+    max-width: 25rem;
+    margin: 3.125rem auto;
     background: white;
-    padding: 30px;
-    border-radius: 8px;
+    padding: 1.875rem;
+    border-radius: 0.5rem;
     box-shadow: 0 4px 10px rgba(0,0,0,0.1);
 }
 
@@ -62,12 +77,12 @@ nav a:hover {
     margin-top: 0;
     color: #2c3e50;
     text-align: center;
-    margin-bottom: 20px;
+    margin-bottom: 1.25rem;
 }
 
 
 .auth-links {
-    margin-top: 20px;
+    margin-top: 1.25rem;
     text-align: center;
     font-size: 0.9em;
 }
@@ -97,9 +112,9 @@ nav a:hover {
 
 .modal-content {
     background-color: white;
-    padding: 30px;
-    border-radius: 8px;
-    width: 400px;
+    padding: 1.875rem;
+    border-radius: 0.5rem;
+    width: 25rem;
     max-width: 90%;
     box-shadow: 0 5px 15px rgba(0,0,0,0.3);
     position: relative;
@@ -108,9 +123,9 @@ nav a:hover {
 
 .close-modal {
     position: absolute;
-    top: 10px;
-    right: 15px;
-    font-size: 28px;
+    top: 0.625rem;
+    right: 0.9375rem;
+    font-size: 1.75rem;
     font-weight: bold;
     color: #aaa;
     cursor: pointer;

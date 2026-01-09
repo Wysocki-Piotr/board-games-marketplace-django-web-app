@@ -34,7 +34,7 @@ $('#btn-api-search').on('click', function() {
 
                     let imgHtml = item.image_url
                         ? `<img src="${item.image_url}" alt="${item.title}">`
-                        : `<div class="no_photo">Brak zdjęcia</div>`;
+                        : `<img src="/static/img/placeholder.png" alt="Brak zdjęcia" class="card-img-top placeholder-img">`;
 
                     const cardHtml = `
                         <div class="card">

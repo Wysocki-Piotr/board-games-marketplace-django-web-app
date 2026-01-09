@@ -1,5 +1,5 @@
 form p {
-    margin-bottom: 15px;
+    margin-bottom: 0.9375rem;
 }
 
 form input[type="text"],
@@ -9,15 +9,17 @@ form input[type="number"],
 form select,
 form textarea {
     width: 100%;
-    padding: 10px;
-    margin-top: 5px;
+    padding: 0.625rem;
+    margin-top: 0.3125rem;
     border: 1px solid #ccc;
-    border-radius: 4px;
+    border-radius: 0.25rem;
     box-sizing: border-box;
 }
 
-.form-group { margin-bottom: 15px; }
-.form-control { width: 100%; padding: 10px; box-sizing: border-box; margin-top: 5px; }
+.form-group { margin-bottom: 0.9375rem; }
+.form-control { width: 100%; padding: 0.625rem;
+    box-sizing: border-box;
+    margin-top: 0.3125rem; }
 
 .input-error {
     border-color: #e74c3c !important;
@@ -28,13 +30,13 @@ form textarea {
     color: #e74c3c;
     list-style: none;
     padding: 0;
-    margin: 5px 0;
-    font-size: 0.9em;
+    margin: 0.3125rem 0;
+    font-size: 0.9rem;
     font-weight: bold;
 }
 
 .js-error-message{
     color: #e74c3c;
     font-size: 0.85em;
-    margin-top: 5px;
+    margin-top: 0.3125rem;
 }
